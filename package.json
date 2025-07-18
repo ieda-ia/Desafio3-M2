@@ -1,0 +1,27 @@
+{
+  "name": "api-autenticacao-empresarial",
+  "version": "1.0.0",
+  "description": "API REST de autenticação empresarial para estudos, com Express, JWT, e boas práticas de segurança.",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": ["express", "jwt", "autenticacao", "seguranca", "api"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "joi": "^17.10.1",
+    "jsonwebtoken": "^9.0.2",
+    "swagger-ui-express": "4.1.3",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+} 

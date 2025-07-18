@@ -1,0 +1,371 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Autenticação Empresarial",
+    "version": "1.0.0",
+    "description": "API REST para autenticação, cadastro, recuperação de senha e segurança empresarial."
+  },
+  "servers": [
+    { "url": "http://localhost:3004" }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Login de usuário",
+        "description": "Login com email/senha ou username/senha.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": { "type": "string" },
+                  "senha": { "type": "string" },
+                  "dispositivo": { "type": "string" }
+                },
+                "required": ["login", "senha"]
+              },
+              "examples": {
+                "loginEmail": {
+                  "summary": "Login com email",
+                  "value": { "login": "usuario@empresa.com", "senha": "Senha123", "dispositivo": "Chrome-Mac" }
+                },
+                "loginUsername": {
+                  "summary": "Login com username",
+                  "value": { "login": "usuario1", "senha": "Senha123", "dispositivo": "Firefox-Win" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login realizado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Login com sucesso",
+                    "value": { "token": "<jwt>", "mensagem": "Login realizado com sucesso!", "novoDispositivo": false }
+                  },
+                  "primeiroLogin": {
+                    "summary": "Primeiro login",
+                    "value": { "token": "<jwt>", "mensagem": "Bem-vindo ao seu primeiro login!", "novoDispositivo": true }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Credenciais inválidas" },
+          "403": { "description": "Usuário bloqueado" }
+        }
+      }
+    },
+    "/cadastro": {
+      "post": {
+        "summary": "Cadastro de novo usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Cadastro"
+              },
+              "examples": {
+                "cadastro": {
+                  "summary": "Cadastro básico",
+                  "value": {
+                    "email": "usuario@empresa.com",
+                    "username": "usuario1",
+                    "senha": "Senha123",
+                    "nome": "Usuário Teste",
+                    "dataNascimento": "1990-01-01",
+                    "nomePai": "João Teste",
+                    "nomeMae": "Maria Teste"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuário cadastrado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Cadastro realizado",
+                    "value": { "mensagem": "Usuário cadastrado com sucesso. Confirme seu email para ativar a conta.", "userId": "1" }
+                  }
+                }
+              }
+            }
+          },
+          "409": { "description": "Email ou username já cadastrado" }
+        }
+      }
+    },
+    "/confirmar-email": {
+      "post": {
+        "summary": "Confirmação de email do usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": { "type": "string" }
+                },
+                "required": ["userId"]
+              },
+              "examples": {
+                "confirmar": {
+                  "summary": "Confirmação de email",
+                  "value": { "userId": "1" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email confirmado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Email confirmado",
+                    "value": { "mensagem": "Email confirmado com sucesso." }
+                  }
+                }
+              }
+            }
+          },
+          "404": { "description": "Usuário não encontrado" }
+        }
+      }
+    },
+    "/recuperar-senha": {
+      "post": {
+        "summary": "Recuperação de senha",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecuperarSenha"
+              },
+              "examples": {
+                "recuperar": {
+                  "summary": "Recuperação de senha",
+                  "value": {
+                    "email": "usuario@empresa.com",
+                    "dataNascimento": "1990-01-01",
+                    "nomePai": "João Teste",
+                    "nomeMae": "Maria Teste",
+                    "novaSenha": "NovaSenha123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha redefinida",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Senha redefinida",
+                    "value": { "mensagem": "Senha redefinida com sucesso." }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Dados de recuperação não conferem" }
+        }
+      }
+    },
+    "/trocar-senha": {
+      "post": {
+        "summary": "Troca de senha (autenticado)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "senhaAtual": { "type": "string" },
+                  "novaSenha": { "type": "string" }
+                },
+                "required": ["senhaAtual", "novaSenha"]
+              },
+              "examples": {
+                "troca": {
+                  "summary": "Troca de senha",
+                  "value": { "senhaAtual": "Senha123", "novaSenha": "NovaSenha123" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Senha alterada",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Senha alterada",
+                    "value": { "mensagem": "Senha alterada com sucesso." }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Senha atual incorreta" }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "summary": "Logout do usuário (autenticado)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Logout realizado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Logout realizado",
+                    "value": { "mensagem": "Logout realizado com sucesso." }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Token inválido" }
+        }
+      }
+    },
+    "/historico-login": {
+      "get": {
+        "summary": "Histórico de login do usuário (autenticado)",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": {
+            "description": "Histórico retornado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Histórico de login",
+                    "value": { "historico": [ { "data": "2024-07-17T20:00:00Z", "dispositivo": "Chrome-Mac" } ] }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Token inválido" }
+        }
+      }
+    },
+    "/desbloquear-usuario": {
+      "post": {
+        "summary": "Desbloqueio manual de usuário (admin)",
+        "description": "Desbloqueia manualmente um usuário bloqueado por tentativas inválidas.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "userId": { "type": "string" }
+                },
+                "required": ["userId"]
+              },
+              "examples": {
+                "desbloquear": {
+                  "summary": "Desbloquear usuário",
+                  "value": { "userId": "1" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Usuário desbloqueado com sucesso.",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "success": {
+                    "summary": "Usuário desbloqueado",
+                    "value": { "mensagem": "Usuário desbloqueado com sucesso." }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Usuário não encontrado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "notFound": {
+                    "summary": "Usuário não encontrado",
+                    "value": { "mensagem": "Usuário não encontrado." }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Cadastro": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "username": { "type": "string" },
+          "senha": { "type": "string" },
+          "nome": { "type": "string" },
+          "dataNascimento": { "type": "string" },
+          "nomePai": { "type": "string" },
+          "nomeMae": { "type": "string" }
+        },
+        "required": ["email", "username", "senha", "nome", "dataNascimento", "nomePai", "nomeMae"]
+      },
+      "RecuperarSenha": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "dataNascimento": { "type": "string" },
+          "nomePai": { "type": "string" },
+          "nomeMae": { "type": "string" },
+          "novaSenha": { "type": "string" }
+        },
+        "required": ["email", "dataNascimento", "nomePai", "nomeMae", "novaSenha"]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+} 
