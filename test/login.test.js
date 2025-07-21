@@ -2,7 +2,7 @@ const request = require('supertest');
 const { expect } = require('chai');
 
 
-
+// Teste de login com sucesso
 describe('Testes da API de Login', () => {
   describe('Login com sucesso', () => {
     it('deve fazer login com sucesso com credenciais válidas', async () => {
