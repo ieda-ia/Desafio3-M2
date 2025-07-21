@@ -5,9 +5,16 @@
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "test": "mocha ./test/**/*.test.js --timeout 200000"
   },
-  "keywords": ["express", "jwt", "autenticacao", "seguranca", "api"],
+  "keywords": [
+    "express",
+    "jwt",
+    "autenticacao",
+    "seguranca",
+    "api"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -22,6 +29,8 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "chai": "^5.2.1",
+    "mocha": "^10.0.0",
+    "supertest": "^6.3.0"
   }
-} 
+}
