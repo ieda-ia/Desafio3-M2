@@ -1,4 +1,4 @@
-# 🔐 API REST de Autenticação Empresarial
+# 🔐 API REST de Autenticação para o Desafio 3 da Mentoria 2.0
 
 [![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.18+-blue.svg)](https://expressjs.com/)
@@ -92,25 +92,25 @@ npm test
 ## 📚 Endpoints
 
 ### Autenticação
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| POST | `/login` | Login de usuário | ❌ |
-| POST | `/logout` | Logout do usuário | ✅ |
-| POST | `/trocar-senha` | Troca de senha | ✅ |
+| Método | Endpoint        | Descrição         | Autenticação |
+|--------|-----------------|-------------------|--------------|
+| POST   | `/login`        | Login de usuário  |      ❌      |
+| POST   | `/logout`       | Logout do usuário |      ✅      |
+| POST   | `/trocar-senha` | Troca de senha    |      ✅      |
 
 ### Cadastro e Recuperação
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| POST | `/cadastro` | Cadastra novo usuário | ❌ |
-| POST | `/confirmar-email` | Confirma email do cadastro | ❌ |
-| POST | `/recuperar-senha` | Recupera senha | ❌ |
-| POST | `/desbloquear-usuario` | Desbloqueio manual (admin) | ❌ |
+| Método | Endpoint               | Descrição                  | Autenticação |
+|--------|------------------------|----------------------------|--------------|
+| POST   | `/cadastro`            | Cadastra novo usuário      |     ❌       |
+| POST   | `/confirmar-email`     | Confirma email do cadastro |     ❌       |
+| POST   | `/recuperar-senha`     | Recupera senha             |     ❌       |
+| POST   | `/desbloquear-usuario` | Desbloqueio manual (admin) |     ❌       |
 
 ### Informações
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| GET | `/historico-login` | Histórico de login | ✅ |
-| GET | `/docs` | Documentação Swagger | ❌ |
+| Método | Endpoint           | Descrição            | Autenticação |
+|--------|--------------------|----------------------|--------------|
+| GET    | `/historico-login` | Histórico de login   |     ✅       |
+| GET    | `/docs`            | Documentação Swagger |     ❌       |
 
 ## 🏗️ Estrutura do Projeto
 
