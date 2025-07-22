@@ -11,6 +11,27 @@ API REST robusta de autenticação empresarial desenvolvida para **estudos de te
 
 ⚠️ **NÃO destinada para produção** - Armazenamento em memória (sem banco de dados).
 
+---
+
+## 👤 Usuário Fixo para Testes
+
+Um usuário já está disponível para testes em todos os endpoints protegidos:
+
+```json
+{
+  "email": "usuario@empresa.com",
+  "username": "usuario1",
+  "senha": "Senha123",
+  "nome": "Usuário Teste",
+  "dataNascimento": "1990-01-01",
+  "nomePai": "João Teste",
+  "nomeMae": "Maria Teste",
+  "emailConfirmado": true
+}
+```
+
+---
+
 ## ✨ Funcionalidades Implementadas
 
 ### 🔑 Autenticação

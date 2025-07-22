@@ -58,7 +58,19 @@
             }
           },
           "401": { "description": "Credenciais inválidas" },
-          "403": { "description": "Usuário bloqueado" }
+          "403": {
+            "description": "Usuário bloqueado",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "bloqueado": {
+                    "summary": "Usuário bloqueado",
+                    "value": { "mensagem": "Usuário bloqueado por 5 minutos." }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
