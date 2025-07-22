@@ -2,11 +2,16 @@ const express = require('express');
 const cors = require('cors');
 const routes = require('./routes');
 require('dotenv').config();
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('../swagger/swagger.json');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Documentação Swagger
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Rotas principais
 app.use('/', routes);
@@ -16,7 +21,4 @@ app.use((req, res) => {
   res.status(404).json({ mensagem: 'Rota não encontrada' });
 });
 
-const PORT = process.env.PORT || 3004;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-}); 
+module.exports = app; 

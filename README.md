@@ -69,19 +69,25 @@ Um usuário já está disponível para testes em todos os endpoints protegidos:
 ### Instalação
 ```bash
 # Clone o repositório
-git clone <seu-repositorio>
-cd api-autenticacao-empresarial
+ git clone <seu-repositorio>
+ cd Desafio3-M2
 
 # Instale as dependências
 npm install
 
 # Inicie o servidor
-npm run dev
+npm start
 ```
 
-### Acessando a API
-- **Servidor:** http://localhost:3004
-- **Documentação Swagger:** http://localhost:3004/docs
+### Rodando os Testes
+
+Os testes automatizados utilizam o Mocha e o Supertest. Não é necessário subir o servidor manualmente para rodar os testes!
+
+```bash
+npm test
+```
+
+---
 
 ## 📚 Endpoints
 
@@ -118,12 +124,13 @@ npm run dev
   /models               # Modelos de dados
     - userModel.js       # Usuários em memória
     - tokenBlacklist.js  # Blacklist de tokens
-  /services             # Serviços (futuro)
-  /utils                # Utilitários (futuro)
-  - app.js              # Configuração do Express
+  - app.js              # Configuração do Express (exporta apenas o app, usado nos testes)
+  - server.js           # Ponto de entrada do servidor (usa app.listen)
   - routes.js           # Rotas da API
 /swagger
   - swagger.json        # Documentação OpenAPI
+/test
+  - login.test.js       # Testes automatizados da API
 ```
 
 ## 🧪 Dados de Teste
@@ -162,6 +169,7 @@ npm run dev
 ```bash
 npm start          # Inicia o servidor em produção
 npm run dev        # Inicia o servidor em desenvolvimento (nodemon)
+npm test           # Executa os testes automatizados
 ```
 
 ## 🤝 Contribuindo

@@ -4,8 +4,8 @@
   "description": "API REST de autenticação empresarial para estudos, com Express, JWT, e boas práticas de segurança.",
   "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
     "test": "mocha ./test/**/*.test.js --timeout=200000"
   },
   "keywords": [

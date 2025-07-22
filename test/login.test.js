@@ -1,5 +1,6 @@
 const request = require('supertest');
 const { expect } = require('chai');
+const app = require('../src/app');
 
 
 // Teste de login com sucesso
@@ -13,7 +14,7 @@ describe('Testes da API de Login', () => {
     const username = `usuario${randomSuffix}`;
     // Cadastrar usuário
     it('Deve retornar 200 ao fazer cadastro do usuário com sucesso', async () => {
-      const resposta = await request('http://localhost:3004')
+      const resposta = await request(app)
         .post('/cadastro')
         .set('Content-Type', 'application/json')
         .send({
@@ -32,7 +33,7 @@ describe('Testes da API de Login', () => {
     
     // Validar cadastro - confirmar e-mail com id
     it('Deve fazer cadastro do usuário', async () => {
-      const resposta = await request('http://localhost:3004')
+      const resposta = await request(app)
         .post('/confirmar-email')
         .set('Content-Type', 'application/json')
         .send({
@@ -43,7 +44,7 @@ describe('Testes da API de Login', () => {
     });
 
     it('Deve retornar 401 ao fazer login com credenciais inválidas', async () => {
-      const resposta = await request('http://localhost:3004')
+      const resposta = await request(app)
         .post('/login')
         .set('Content-Type', 'application/json')
         .send({ 
@@ -55,7 +56,7 @@ describe('Testes da API de Login', () => {
     });
 
     it('Deve fazer login com sucesso com credenciais válidas', async () => {
-      const resposta = await request('http://localhost:3004')
+      const resposta = await request(app)
         .post('/login')
         .set('Content-Type', 'application/json')
         .send({ 
@@ -68,7 +69,7 @@ describe('Testes da API de Login', () => {
     });
 
     it('Deve fazer logout com sucesso', async () => {
-      const resposta = await request('http://localhost:3004')
+      const resposta = await request(app)
         .post('/logout')
         .set('accept', 'application/json')
         .set('Authorization', `Bearer ${token}`);
@@ -79,7 +80,7 @@ describe('Testes da API de Login', () => {
     it('Deve retornar 403 usuario bloqueado', async () => {
       let resposta = ''
       for (let i = 0; i <= 2; i++) {
-        resposta = await request('http://localhost:3004')
+        resposta = await request(app)
           .post('/login')
           .set('Content-Type', 'application/json')
           .send({ 
@@ -92,7 +93,7 @@ describe('Testes da API de Login', () => {
     });
 
     it('Deve recuperar senha', async () => {
-        const resposta = await request('http://localhost:3004')
+        const resposta = await request(app)
           .post('/recuperar-senha')
           .set('Content-Type', 'application/json')
           .send({ 
