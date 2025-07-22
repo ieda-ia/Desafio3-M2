@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "test": "mocha ./test/**/*.test.js --timeout=200000"
+    "test": "mocha ./test/**/*.test.js --timeout=200000,"
   },
   "keywords": [
     "express",
