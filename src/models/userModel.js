@@ -5,6 +5,26 @@ const dayjs = require('dayjs');
 // Estrutura de armazenamento em memória
 const users = [];
 
+// Usuário fixo para testes
+const usuarioFixo = {
+  id: uuidv4(),
+  email: 'usuario@empresa.com',
+  username: 'usuario1',
+  senha: bcrypt.hashSync('Senha123', 10),
+  nome: 'Usuário Teste',
+  dataNascimento: '1990-01-01',
+  nomePai: 'João Teste',
+  nomeMae: 'Maria Teste',
+  emailConfirmado: true, // já confirmado
+  tentativasInvalidas: 0,
+  bloqueadoAte: null,
+  historicoLogin: [],
+  dispositivos: [],
+  sessoes: [],
+  primeiroLogin: true
+};
+users.push(usuarioFixo);
+
 // Função para criar novo usuário
 function createUser({ email, username, senha, nome, dataNascimento, nomePai, nomeMae }) {
   const hash = bcrypt.hashSync(senha, 10);

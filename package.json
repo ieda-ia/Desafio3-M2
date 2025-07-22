@@ -31,6 +31,18 @@
   "devDependencies": {
     "chai": "^5.2.1",
     "mocha": "^10.8.2",
+    "nodemon": "^3.1.10",
     "supertest": "^6.3.4"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ieda-ia/Desafio3-M2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ieda-ia/Desafio3-M2/issues"
+  },
+  "homepage": "https://github.com/ieda-ia/Desafio3-M2#readme"
 }

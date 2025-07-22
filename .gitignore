@@ -150,3 +150,7 @@ jspm_packages/
 .Trashes
 ehthumbs.db
 Thumbs.db 
+
+#test
+mochawesome-report/
+.env
