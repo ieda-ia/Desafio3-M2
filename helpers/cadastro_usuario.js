@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../src/app.js');
 
-// Gera e-mail e username aleatórios
 function gerarCredenciaisAleatorias() {
   const random = Math.floor(Math.random() * 1000000);
   return {
