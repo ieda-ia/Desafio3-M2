@@ -6,9 +6,6 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../swagger/swagger.json');
 
-// Placeholders para controllers (a serem implementados)
-// const userController = require('./controllers/userController');
-// const sessionController = require('./controllers/sessionController');
 
 // Autenticação
 router.post('/login', authController.login);

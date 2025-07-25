@@ -132,9 +132,6 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
-
 # IDE files
 .vscode/
 .idea/
@@ -153,4 +150,3 @@ Thumbs.db
 
 #test
 mochawesome-report/
-.env
