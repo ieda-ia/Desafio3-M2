@@ -1,0 +1,95 @@
+<% include('layout-simple', { 
+    title: 'Login - Desafio3-M2',
+    body: `
+<div class="container">
+    <div class="form-title">Login</div>
+
+    <% if (error) { %>
+        <div class="alert alert-error">
+            <%= error %>
+        </div>
+    <% } %>
+
+    <% if (success) { %>
+        <div class="alert alert-success">
+            <%= success %>
+        </div>
+    <% } %>
+
+    <form action="/login" method="POST" id="loginForm">
+        <div class="form-group">
+            <label for="login">Username</label>
+            <input 
+                type="text" 
+                id="login"
+                class="form-control" 
+                name="login" 
+                placeholder="Username"
+                required
+                autocomplete="username"
+            >
+        </div>
+        
+        <div class="form-group">
+            <label for="senha">Password</label>
+            <input 
+                type="password" 
+                id="senha"
+                class="form-control" 
+                name="senha" 
+                placeholder="Password"
+                required
+                autocomplete="current-password"
+            >
+        </div>
+
+        <input type="hidden" name="dispositivo" id="dispositivo">
+        
+        <button type="submit" class="btn btn-primary">
+            Let me in.
+        </button>
+    </form>
+
+    <a href="/cadastro" class="link">
+        Não tem conta? Cadastre-se
+    </a>
+</div>
+
+<script>
+    // Detectar dispositivo
+    function detectarDispositivo() {
+        const userAgent = navigator.userAgent;
+        let dispositivo = 'Desktop';
+        
+        if (/Android/i.test(userAgent)) {
+            dispositivo = 'Android';
+        } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+            dispositivo = 'iOS';
+        } else if (/Windows Phone/i.test(userAgent)) {
+            dispositivo = 'Windows Phone';
+        } else if (/Mobile/i.test(userAgent)) {
+            dispositivo = 'Mobile';
+        }
+        
+        document.getElementById('dispositivo').value = dispositivo;
+    }
+
+    // Executar quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        detectarDispositivo();
+        
+        // Validação do formulário
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const login = document.getElementById('login').value.trim();
+            const senha = document.getElementById('senha').value;
+            
+            if (!login || !senha) {
+                e.preventDefault();
+                alert('Por favor, preencha todos os campos.');
+                return false;
+            }
+        });
+    });
+</script>
+    `
+}) %> 

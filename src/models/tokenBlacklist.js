@@ -1,19 +1,16 @@
-const blacklist = [];
-const dayjs = require('dayjs');
+const mongoose = require('mongoose');
 
-function addToken(token, exp) {
-  blacklist.push({ token, exp });
-}
-
-function isBlacklisted(token) {
-  // Remove tokens expirados
-  const now = dayjs().unix();
-  for (let i = blacklist.length - 1; i >= 0; i--) {
-    if (blacklist[i].exp < now) {
-      blacklist.splice(i, 1);
-    }
+const tokenBlacklistSchema = new mongoose.Schema({
+  token: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  dataCriacao: {
+    type: Date,
+    default: Date.now,
+    expires: 24 * 60 * 60 // Expira em 24 horas
   }
-  return blacklist.some(entry => entry.token === token);
-}
+});
 
-module.exports = { addToken, isBlacklisted }; 
+module.exports = mongoose.model('TokenBlacklist', tokenBlacklistSchema); 

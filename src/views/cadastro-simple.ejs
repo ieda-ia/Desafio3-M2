@@ -1,0 +1,175 @@
+<% include('layout-simple', { 
+    title: 'Cadastro - Desafio3-M2',
+    body: `
+<div class="container">
+    <div class="form-title">Cadastro</div>
+
+    <% if (error) { %>
+        <div class="alert alert-error">
+            <%= error %>
+        </div>
+    <% } %>
+
+    <% if (success) { %>
+        <div class="alert alert-success">
+            <%= success %>
+        </div>
+    <% } %>
+
+    <form action="/cadastro" method="POST" id="cadastroForm">
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input
+                type="email"
+                id="email"
+                class="form-control"
+                name="email"
+                placeholder="Digite seu e-mail"
+                required
+                autocomplete="email"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="username">Nome de usuário</label>
+            <input
+                type="text"
+                id="username"
+                class="form-control"
+                name="username"
+                placeholder="Digite seu nome de usuário"
+                required
+                autocomplete="username"
+                minlength="3"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="nome">Nome completo</label>
+            <input
+                type="text"
+                id="nome"
+                class="form-control"
+                name="nome"
+                placeholder="Digite seu nome completo"
+                required
+                autocomplete="name"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="dataNascimento">Data de nascimento</label>
+            <input
+                type="date"
+                id="dataNascimento"
+                class="form-control"
+                name="dataNascimento"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="nomePai">Nome do pai</label>
+            <input
+                type="text"
+                id="nomePai"
+                class="form-control"
+                name="nomePai"
+                placeholder="Digite o nome do pai"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="nomeMae">Nome da mãe</label>
+            <input
+                type="text"
+                id="nomeMae"
+                class="form-control"
+                name="nomeMae"
+                placeholder="Digite o nome da mãe"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="senha">Senha</label>
+            <input
+                type="password"
+                id="senha"
+                class="form-control"
+                name="senha"
+                placeholder="Digite sua senha (mín. 6 caracteres)"
+                required
+                autocomplete="new-password"
+                minlength="6"
+                pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$"
+            >
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Criar conta
+        </button>
+    </form>
+
+    <a href="/login" class="link">
+        Já tem uma conta? Faça login
+    </a>
+</div>
+
+<script>
+    // Executar quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        // Validação do formulário
+        document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+            const email = document.getElementById('email').value.trim();
+            const username = document.getElementById('username').value.trim();
+            const nome = document.getElementById('nome').value.trim();
+            const dataNascimento = document.getElementById('dataNascimento').value;
+            const nomePai = document.getElementById('nomePai').value.trim();
+            const nomeMae = document.getElementById('nomeMae').value.trim();
+            const senha = document.getElementById('senha').value;
+
+            // Validação básica
+            if (!email || !username || !nome || !dataNascimento || !nomePai || !nomeMae || !senha) {
+                e.preventDefault();
+                alert('Por favor, preencha todos os campos.');
+                return false;
+            }
+
+            // Validação de email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                e.preventDefault();
+                alert('Por favor, insira um email válido.');
+                return false;
+            }
+
+            // Validação de senha
+            const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+            if (!senhaRegex.test(senha)) {
+                e.preventDefault();
+                alert('A senha deve ter pelo menos 6 caracteres, incluindo letras e números.');
+                return false;
+            }
+        });
+
+        // Validação em tempo real da senha
+        document.getElementById('senha').addEventListener('input', function() {
+            const senha = this.value;
+            const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+
+            if (senha.length > 0) {
+                if (senhaRegex.test(senha)) {
+                    this.style.borderColor = '#2ecc71';
+                } else {
+                    this.style.borderColor = '#e74c3c';
+                }
+            } else {
+                this.style.borderColor = 'rgba(52, 152, 219, 0.3)';
+            }
+        });
+    });
+</script>
+    `
+}) %> 

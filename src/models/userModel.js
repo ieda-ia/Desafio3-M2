@@ -1,82 +1,118 @@
-const { v4: uuidv4 } = require('uuid');
+const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const dayjs = require('dayjs');
 
-// Estrutura de armazenamento em memória
-const users = [];
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  },
+  senha: {
+    type: String,
+    required: true,
+    minlength: 6
+  },
+  nome: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  dataNascimento: {
+    type: Date,
+    required: true
+  },
+  nomePai: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  nomeMae: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  emailConfirmado: {
+    type: Boolean,
+    default: false
+  },
+  bloqueado: {
+    type: Boolean,
+    default: false
+  },
+  tentativasLogin: {
+    type: Number,
+    default: 0
+  },
+  ultimoLogin: {
+    type: Date
+  },
+  historicoLogin: [{
+    data: {
+      type: Date,
+      default: Date.now
+    },
+    dispositivo: String,
+    ip: String,
+    sucesso: Boolean
+  }],
+  dataCriacao: {
+    type: Date,
+    default: Date.now
+  },
+  dataAtualizacao: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  timestamps: true
+});
 
-// Usuário fixo para testes
-const usuarioFixo = {
-  id: uuidv4(),
-  email: 'usuario@empresa.com',
-  username: 'usuario1',
-  senha: bcrypt.hashSync('Senha123', 10),
-  nome: 'Usuário Teste',
-  dataNascimento: '1990-01-01',
-  nomePai: 'João Teste',
-  nomeMae: 'Maria Teste',
-  emailConfirmado: true, // já confirmado
-  tentativasInvalidas: 0,
-  bloqueadoAte: null,
-  historicoLogin: [],
-  dispositivos: [],
-  sessoes: [],
-  primeiroLogin: true
+// Middleware para hash da senha antes de salvar
+userSchema.pre('save', async function(next) {
+  if (!this.isModified('senha')) return next();
+  
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.senha = await bcrypt.hash(this.senha, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Método para comparar senhas
+userSchema.methods.compararSenha = async function(senhaCandidata) {
+  return await bcrypt.compare(senhaCandidata, this.senha);
 };
-users.push(usuarioFixo);
 
-// Função para criar novo usuário
-function createUser({ email, username, senha, nome, dataNascimento, nomePai, nomeMae }) {
-  const hash = bcrypt.hashSync(senha, 10);
-  const user = {
-    id: uuidv4(),
-    email,
-    username,
-    senha: hash,
-    nome,
-    dataNascimento,
-    nomePai,
-    nomeMae,
-    emailConfirmado: false,
-    tentativasInvalidas: 0,
-    bloqueadoAte: null,
-    historicoLogin: [],
-    dispositivos: [],
-    sessoes: [],
-    primeiroLogin: true
-  };
-  users.push(user);
-  return user;
-}
+// Método para adicionar login ao histórico
+userSchema.methods.adicionarLogin = function(dispositivo, ip, sucesso) {
+  this.historicoLogin.push({
+    data: new Date(),
+    dispositivo,
+    ip,
+    sucesso
+  });
+  
+  if (sucesso) {
+    this.ultimoLogin = new Date();
+    this.tentativasLogin = 0;
+  } else {
+    this.tentativasLogin += 1;
+    if (this.tentativasLogin >= 5) {
+      this.bloqueado = true;
+    }
+  }
+  
+  return this.save();
+};
 
-function findUserByEmail(email) {
-  return users.find(u => u.email === email);
-}
-
-function findUserByUsername(username) {
-  return users.find(u => u.username === username);
-}
-
-function findUserById(id) {
-  return users.find(u => u.id === id);
-}
-
-function updateUser(id, data) {
-  const user = findUserById(id);
-  if (user) Object.assign(user, data);
-  return user;
-}
-
-function resetUsers() {
-  users.length = 0;
-}
-
-module.exports = {
-  users,
-  createUser,
-  findUserByEmail,
-  findUserByUsername,
-  findUserById,
-  updateUser,
-  resetUsers
-}; 
+module.exports = mongoose.model('User', userSchema); 

@@ -1,12 +1,12 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
-const MongoStore = require('connect-mongo');
 const path = require('path');
-const routes = require('./routes');
+const routes = require('./routes-simple');
 require('dotenv').config();
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('../swagger/swagger.json');
+
 const app = express();
 
 app.use(cors());
@@ -20,17 +20,13 @@ app.set('views', path.join(__dirname, 'views'));
 // Configurar arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Configurar sessões
+// Configurar sessões em memória
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'sua-chave-secreta-aqui',
+  secret: process.env.SESSION_SECRET || 'chave-secreta-temporaria',
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI || 'mongodb://localhost:27017/auth_empresarial',
-    ttl: 24 * 60 * 60 // 1 dia
-  }),
   cookie: {
-    secure: process.env.NODE_ENV === 'production',
+    secure: false,
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000 // 1 dia
   }

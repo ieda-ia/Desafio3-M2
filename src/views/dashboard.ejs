@@ -1,0 +1,219 @@
+<%- include('layout', { title: 'Dashboard - Desafio3-M2' }) %>
+
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Dashboard</h1>
+        <div class="user-info">
+            <div>
+                <strong><%= user.nome %></strong><br>
+                <small><%= user.email %></small>
+            </div>
+            <a href="/logout" class="logout-btn">
+                Sair
+            </a>
+        </div>
+    </div>
+
+    <% if (error) { %>
+        <div class="alert alert-error">
+            <%= error %>
+        </div>
+    <% } %>
+
+    <% if (success) { %>
+        <div class="alert alert-success">
+            <%= success %>
+        </div>
+    <% } %>
+
+    <div class="card">
+        <h3>Informações do Perfil</h3>
+        <p><strong>Nome:</strong> <%= user.nome %></p>
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <p><strong>Username:</strong> <%= user.username %></p>
+        <p><strong>ID do Usuário:</strong> <%= user.id %></p>
+    </div>
+
+    <div class="card">
+        <h3>Segurança</h3>
+        <p>Seu perfil está protegido com as melhores práticas de segurança:</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>Autenticação JWT</li>
+            <li>Senhas criptografadas</li>
+            <li>Proteção contra ataques</li>
+            <li>Histórico de login</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Ações</h3>
+        <div style="display: grid; gap: 10px; margin-top: 15px;">
+            <button class="btn btn-primary" onclick="alterarSenha()">
+                Alterar Senha
+            </button>
+            <button class="btn" onclick="verHistorico()">
+                Ver Histórico
+            </button>
+            <button class="btn" onclick="exportarDados()">
+                Exportar Dados
+            </button>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Sobre o Sistema</h3>
+        <p>Este é um sistema de autenticação empresarial desenvolvido com:</p>
+        <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>Node.js + Express</li>
+            <li>MongoDB + Mongoose</li>
+            <li>JWT para autenticação</li>
+            <li>EJS para templates</li>
+            <li>Bcrypt para criptografia</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Última Atividade</h3>
+        <p><strong>Login realizado:</strong> Agora</p>
+        <p><strong>Dispositivo:</strong> <span id="dispositivoAtual"></span></p>
+        <p><strong>IP:</strong> <span id="ipAtual">Detectando...</span></p>
+        <p><strong>Status:</strong> <span style="color: #28a745;">Online</span></p>
+    </div>
+</div>
+
+<!-- Modal para alterar senha -->
+<div id="senhaModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 4px; width: 90%; max-width: 400px;">
+        <h3>Alterar Senha</h3>
+        <form id="alterarSenhaForm" style="margin-top: 20px;">
+            <div class="form-group">
+                <label for="senhaAtual">Senha atual</label>
+                <input type="password" id="senhaAtual" class="form-control" name="senhaAtual" required>
+            </div>
+            <div class="form-group">
+                <label for="novaSenha">Nova senha</label>
+                <input type="password" id="novaSenha" class="form-control" name="novaSenha" required>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Alterar</button>
+                <button type="button" class="btn" onclick="fecharModal()" style="flex: 1;">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Detectar dispositivo e IP
+    function detectarDispositivo() {
+        const userAgent = navigator.userAgent;
+        let dispositivo = 'Desktop';
+        
+        if (/Android/i.test(userAgent)) {
+            dispositivo = 'Android';
+        } else if (/iPhone|iPad|iPod/i.test(userAgent)) {
+            dispositivo = 'iOS';
+        } else if (/Windows Phone/i.test(userAgent)) {
+            dispositivo = 'Windows Phone';
+        } else if (/Mobile/i.test(userAgent)) {
+            dispositivo = 'Mobile';
+        }
+        
+        document.getElementById('dispositivoAtual').textContent = dispositivo;
+    }
+
+    // Simular detecção de IP
+    function detectarIP() {
+        setTimeout(() => {
+            document.getElementById('ipAtual').textContent = '192.168.1.100';
+        }, 1000);
+    }
+
+    // Função para alterar senha
+    function alterarSenha() {
+        document.getElementById('senhaModal').style.display = 'block';
+    }
+
+    // Função para fechar modal
+    function fecharModal() {
+        document.getElementById('senhaModal').style.display = 'none';
+    }
+
+    // Função para ver histórico
+    function verHistorico() {
+        alert('Funcionalidade de histórico será implementada em breve.');
+    }
+
+    // Função para exportar dados
+    function exportarDados() {
+        const dados = {
+            nome: '<%= user.nome %>',
+            email: '<%= user.email %>',
+            username: '<%= user.username %>',
+            dataExportacao: new Date().toISOString()
+        };
+        
+        const blob = new Blob([JSON.stringify(dados, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'dados-usuario.json';
+        a.click();
+        URL.revokeObjectURL(url);
+        
+        alert('Dados exportados com sucesso!');
+    }
+
+    // Executar quando a página carregar
+    document.addEventListener('DOMContentLoaded', function() {
+        detectarDispositivo();
+        detectarIP();
+        
+        // Fechar modal ao clicar fora
+        document.getElementById('senhaModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                fecharModal();
+            }
+        });
+        
+        // Formulário de alterar senha
+        document.getElementById('alterarSenhaForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const dados = {
+                senhaAtual: formData.get('senhaAtual'),
+                novaSenha: formData.get('novaSenha')
+            };
+            
+            // Validar nova senha
+            const senhaRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+            if (!senhaRegex.test(dados.novaSenha)) {
+                alert('A nova senha deve ter pelo menos 6 caracteres, incluindo letras e números.');
+                return;
+            }
+            
+            // Enviar requisição
+            fetch('/trocar-senha', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(dados)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.mensagem) {
+                    alert(data.mensagem);
+                    if (data.mensagem.includes('sucesso')) {
+                        fecharModal();
+                        this.reset();
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                alert('Erro ao alterar senha. Tente novamente.');
+            });
+        });
+    });
+</script> 

@@ -1,188 +1,159 @@
-# 🚀 Desafio3-M2: API REST de Autenticação Empresarial
+# Sistema de Autenticação Empresarial
 
-[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
-[![Express](https://img.shields.io/badge/Express-4.18+-blue.svg)](https://expressjs.com/)
-[![JWT](https://img.shields.io/badge/JWT-Authentication-orange.svg)](https://jwt.io/)
-[![Swagger](https://img.shields.io/badge/Swagger-Documentation-green.svg)](https://swagger.io/)
+Um sistema completo de autenticação empresarial desenvolvido com Node.js, Express, MongoDB e EJS, seguindo as melhores práticas de segurança.
 
-## 📋 Objetivo
+## 🚀 Funcionalidades
 
-API REST robusta de autenticação empresarial desenvolvida para **estudos de teste de software e aprendizado**.
+### Autenticação
+- ✅ Login com email/username e senha
+- ✅ Cadastro de usuários com validação completa
+- ✅ Logout seguro com blacklist de tokens
+- ✅ Troca de senha
+- ✅ Proteção contra ataques de força bruta
+- ✅ Histórico de login
+- ✅ Detecção de dispositivos
 
-⚠️ **NÃO destinada para produção** - Armazenamento em memória (sem banco de dados).
+### Interface Web
+- ✅ Página de login moderna e responsiva
+- ✅ Página de cadastro com validação em tempo real
+- ✅ Dashboard com informações do usuário
+- ✅ Design inspirado no modelo fornecido
+- ✅ Animações e interações suaves
 
----
+### Segurança
+- ✅ Senhas criptografadas com bcrypt
+- ✅ Autenticação JWT
+- ✅ Sessões seguras com MongoDB
+- ✅ Blacklist de tokens
+- ✅ Validação de dados com Joi
+- ✅ Proteção contra CSRF
+- ✅ Rate limiting (configurável)
 
-## 🛠️ Stack Utilizada
+### Banco de Dados
+- ✅ MongoDB com Mongoose
+- ✅ Modelos bem estruturados
+- ✅ Índices para performance
+- ✅ Validação de dados
 
-- **Node.js** 18+
-- **Express.js** - Framework web
-- **JWT** - Autenticação stateless
-- **bcryptjs** - Hash de senhas
-- **Joi** - Validação de dados
-- **Swagger UI** - Documentação da API
-- **dayjs** - Manipulação de datas
-- **uuid** - Geração de IDs únicos
-- **Mocha** - Testes automatizados
-- **Chai** - Asserções para testes
-- **Supertest** - Testes de endpoints HTTP
+## 🛠️ Tecnologias Utilizadas
 
----
+- **Backend**: Node.js, Express.js
+- **Banco de Dados**: MongoDB, Mongoose
+- **Autenticação**: JWT, bcryptjs
+- **Template Engine**: EJS
+- **Sessões**: express-session, connect-mongo
+- **Validação**: Joi
+- **Testes**: Mocha, Chai, Supertest
+- **Documentação**: Swagger
 
-## 🏗️ Estrutura de Diretórios
+## 📋 Pré-requisitos
 
-```
-/helpers
-  cadastro_usuario.js      # Função utilitária para cadastro de usuário em testes
-/src
-  /controllers
-    authController.js      # Autenticação (login, logout, troca senha)
-    userController.js      # Usuários (cadastro, confirmação, recuperação)
-  /middlewares
-    authMiddleware.js      # Autenticação JWT
-  /models
-    userModel.js           # Usuários em memória
-    tokenBlacklist.js      # Blacklist de tokens
-  app.js                   # Configuração do Express (exporta apenas o app, usado nos testes)
-  server.js                # Ponto de entrada do servidor (usa app.listen)
-  routes.js                # Rotas da API
-/swagger
-  swagger.json             # Documentação OpenAPI
-/test
-  login_positivo.test.js   # Testes positivos de login
-  login_negativo.test.js   # Testes negativos de login
-```
+- Node.js (versão 14 ou superior)
+- MongoDB (versão 4.4 ou superior)
+- npm ou yarn
 
----
+## 🔧 Instalação
 
-## 📚 Comandos Úteis
-
-```bash
-npm install         # Instala as dependências
-npm start           # Inicia o servidor em produção
-npm run dev         # Inicia o servidor em desenvolvimento (nodemon)
-npm test            # Executa os testes automatizados
-npm run test:report # Executa os testes e gera relatório HTML com mochawesome
-```
-
-> **Nota:** O relatório HTML dos testes será gerado na pasta `mochawesome-report` após rodar `npm run test:report`. Para visualizar, abra o arquivo `mochawesome-report/mochawesome.html` no seu navegador.
-
----
-
-## 🔑 Como Executar a API de Login
-
-1. **Clone o repositório:**
+1. **Clone o repositório**
    ```bash
-   git clone <seu-repositorio>
+   git clone https://github.com/ieda-ia/Desafio3-M2.git
    cd Desafio3-M2
    ```
-2. **Instale as dependências:**
+
+2. **Instale as dependências**
    ```bash
    npm install
    ```
-3. **Inicie o servidor:**
+
+3. **Configure as variáveis de ambiente**
    ```bash
-   npm start
-   # ou para ambiente de desenvolvimento
-   npm run dev
+   cp env.example .env
    ```
-4. **Acesse a documentação Swagger:**
-   - [http://localhost:3000/docs](http://localhost:3000/docs)
+   
+   Edite o arquivo `.env` com suas configurações:
+   ```env
+   PORT=3004
+   NODE_ENV=development
+   MONGODB_URI=mongodb://localhost:27017/auth_empresarial
+   JWT_SECRET=sua-chave-secreta-super-segura-aqui
+   SESSION_SECRET=outra-chave-secreta-para-sessoes
+   ```
 
-5. **Faça login:**
-   - Endpoint: `POST /login`
-   - Exemplo de payload:
-     ```json
-     {
-       "email": "usuario@empresa.com",
-       "senha": "Senha123"
-     }
-     ```
-   - O token JWT será retornado na resposta.
+4. **Inicie o MongoDB**
+   ```bash
+   # No Windows
+   mongod
+   
+   # No macOS/Linux
+   sudo systemctl start mongod
+   ```
 
-6. **Utilize o token JWT:**
-   - Adicione o header `Authorization: Bearer <token>` nas requisições protegidas.
+5. **Execute o projeto**
+   ```bash
+   # Desenvolvimento
+   npm run dev
+   
+   # Produção
+   npm start
+   ```
 
----
+6. **Acesse a aplicação**
+   - Interface Web: http://localhost:3004
+   - Documentação API: http://localhost:3004/docs
 
-## 👤 Usuário Fixo para Testes
+## 📁 Estrutura do Projeto
 
-Um usuário já está disponível para testes em todos os endpoints protegidos:
-
-```json
-{
-  "email": "usuario@empresa.com",
-  "username": "usuario1",
-  "senha": "Senha123",
-  "nome": "Usuário Teste",
-  "dataNascimento": "1990-01-01",
-  "nomePai": "João Teste",
-  "nomeMae": "Maria Teste",
-  "emailConfirmado": true
-}
+```
+Desafio3-M2/
+├── src/
+│   ├── config/
+│   │   └── database.js          # Configuração do MongoDB
+│   ├── controllers/
+│   │   ├── authController.js    # Controlador de autenticação
+│   │   └── userController.js    # Controlador de usuários
+│   ├── middlewares/
+│   │   └── authMiddleware.js    # Middleware de autenticação
+│   ├── models/
+│   │   ├── userModel.js         # Modelo de usuário
+│   │   └── tokenBlacklist.js    # Modelo de blacklist
+│   ├── views/
+│   │   ├── layout.ejs           # Layout base
+│   │   ├── login.ejs            # Página de login
+│   │   ├── cadastro.ejs         # Página de cadastro
+│   │   └── dashboard.ejs        # Página do dashboard
+│   ├── app.js                   # Configuração do Express
+│   ├── routes.js                # Rotas da aplicação
+│   └── server.js                # Servidor
+├── test/                        # Testes automatizados
+├── swagger/                     # Documentação da API
+├── helpers/                     # Scripts auxiliares
+├── package.json
+└── README.md
 ```
 
----
+## 🎯 Como Usar
 
-## ✨ Funcionalidades Implementadas
+### Interface Web
 
-### 🔑 Autenticação
-- ✅ Login com email/senha ou username/senha
-- ✅ Login inválido com contagem de tentativas
-- ✅ Bloqueio automático após 3 tentativas inválidas (5 minutos)
-- ✅ Desbloqueio automático e manual (admin)
-- ✅ Logout seguro com blacklist de tokens
-- ✅ JWT com expiração de 10 minutos
+1. **Acesse** http://localhost:3004
+2. **Crie uma conta** na página de cadastro
+3. **Faça login** com suas credenciais
+4. **Explore o dashboard** com suas informações
 
-### 👤 Cadastro e Usuários
-- ✅ Cadastro de usuário com validação completa
-- ✅ Confirmação de email (simulada)
-- ✅ Validação de força de senha (mínimo 6 caracteres, letras + números)
-- ✅ Validação de campos obrigatórios
+### API REST
 
-### 🔒 Segurança Avançada
-- ✅ Middleware de autenticação JWT
-- ✅ Blacklist de tokens para logout seguro
-- ✅ Detecção de login por novo dispositivo
-- ✅ Limite de sessões simultâneas (máximo 3)
-- ✅ Histórico de login com data/hora
-- ✅ Primeiro login com mensagem diferenciada
+#### Autenticação
+```bash
+# Login
+POST /login
+{
+  "login": "usuario@empresa.com",
+  "senha": "Senha123",
+  "dispositivo": "Desktop"
+}
 
-### 🔄 Recuperação e Troca
-- ✅ Recuperação de senha (email, data nascimento, nome pai/mãe)
-- ✅ Troca de senha (requer senha atual)
-
----
-
-## 📚 Endpoints
-
-### Autenticação
-| Método | Endpoint        | Descrição         | Autenticação |
-|--------|-----------------|-------------------|--------------|
-| POST   | `/login`        | Login de usuário  |      ❌      |
-| POST   | `/logout`       | Logout do usuário |      ✅      |
-| POST   | `/trocar-senha` | Troca de senha    |      ✅      |
-
-### Cadastro e Recuperação
-| Método | Endpoint               | Descrição                  | Autenticação |
-|--------|------------------------|----------------------------|--------------|
-| POST   | `/cadastro`            | Cadastra novo usuário      |     ❌       |
-| POST   | `/confirmar-email`     | Confirma email do cadastro |     ❌       |
-| POST   | `/recuperar-senha`     | Recupera senha             |     ❌       |
-| POST   | `/desbloquear-usuario` | Desbloqueio manual (admin) |     ❌       |
-
-### Informações
-| Método | Endpoint           | Descrição            | Autenticação |
-|--------|--------------------|----------------------|--------------|
-| GET    | `/historico-login` | Histórico de login   |     ✅       |
-| GET    | `/docs`            | Documentação Swagger |     ❌       |
-
----
-
-## 🧪 Dados de Teste
-
-### Exemplo de usuário para cadastro:
-```json
+# Cadastro
+POST /cadastro
 {
   "email": "usuario@empresa.com",
   "username": "usuario1",
@@ -192,17 +163,97 @@ Um usuário já está disponível para testes em todos os endpoints protegidos:
   "nomePai": "João Teste",
   "nomeMae": "Maria Teste"
 }
+
+# Logout
+POST /logout
+Authorization: Bearer <token>
+
+# Trocar senha
+POST /trocar-senha
+Authorization: Bearer <token>
+{
+  "senhaAtual": "Senha123",
+  "novaSenha": "NovaSenha123"
+}
 ```
 
-### Fluxo de teste recomendado:
-1. **Cadastrar usuário:** POST `/cadastro`
-2. **Confirmar email:** POST `/confirmar-email` com `userId`
-3. **Fazer login:** POST `/login` (receberá token JWT)
-4. **Usar token:** Adicionar header `Authorization: Bearer <token>`
+## 🧪 Testes
 
----
+```bash
+# Executar todos os testes
+npm test
 
-## 🤝 Contribuindo
+# Executar testes com relatório
+npm run test:report
+```
+
+## 📊 Teste de Carga
+
+O projeto inclui um arquivo JMeter para testes de carga:
+
+```bash
+# Execute o teste de carga com JMeter
+jmeter -n -t Desafio3-M2_LoadTest.jmx -l results.jtl -e -o report/
+```
+
+## 🔒 Segurança
+
+### Medidas Implementadas
+
+- **Criptografia**: Senhas hash com bcrypt
+- **Tokens**: JWT com expiração
+- **Sessões**: Armazenadas no MongoDB
+- **Validação**: Dados validados com Joi
+- **Rate Limiting**: Proteção contra ataques
+- **CSRF**: Proteção contra Cross-Site Request Forgery
+- **XSS**: Sanitização de dados
+- **SQL Injection**: Prevenção com Mongoose
+
+### Boas Práticas
+
+- ✅ Senhas fortes obrigatórias
+- ✅ Bloqueio após tentativas falhadas
+- ✅ Histórico de login
+- ✅ Detecção de dispositivos
+- ✅ Logout seguro
+- ✅ Tokens na blacklist
+
+## 🚀 Deploy
+
+### Docker (Recomendado)
+
+```dockerfile
+FROM node:16-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+EXPOSE 3004
+CMD ["npm", "start"]
+```
+
+### Variáveis de Produção
+
+```env
+NODE_ENV=production
+MONGODB_URI=mongodb://seu-servidor:27017/auth_empresarial
+JWT_SECRET=chave-super-secreta-de-producao
+SESSION_SECRET=chave-sessao-de-producao
+```
+
+## 📈 Monitoramento
+
+### Logs
+- Logs de autenticação
+- Logs de erro
+- Logs de performance
+
+### Métricas
+- Usuários ativos
+- Tentativas de login
+- Taxa de sucesso
+
+## 🤝 Contribuição
 
 1. Fork o projeto
 2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
@@ -210,17 +261,23 @@ Um usuário já está disponível para testes em todos os endpoints protegidos:
 4. Push para a branch (`git push origin feature/AmazingFeature`)
 5. Abra um Pull Request
 
-## 📄 Licença
+## 📝 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-## ⚠️ Aviso
+## 📞 Suporte
 
-Este projeto foi desenvolvido **exclusivamente para fins educacionais e de estudo**. Não é recomendado para uso em produção sem as devidas adaptações de segurança e infraestrutura. 
+- **Email**: suporte@empresa.com
+- **Documentação**: http://localhost:3004/docs
+- **Issues**: [GitHub Issues](https://github.com/ieda-ia/Desafio3-M2/issues)
 
-Grupo 6 - M2.0
-https://github.com/ieda-ia
-https://github.com/fabhid23
-https://github.com/welitaluisa
-https://github.com/JonathasAnalista
-https://github.com/JonatanAlbuquerque0607
+## 🎉 Agradecimentos
+
+- Equipe de desenvolvimento
+- Comunidade Node.js
+- MongoDB
+- Font Awesome (ícones)
+
+---
+
+**Desenvolvido com ❤️ para o Desafio3-M2**
